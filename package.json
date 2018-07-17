@@ -1,20 +1,29 @@
 {
-  "name": "spuild2",
+  "name": "spuild",
   "version": "1.0.0",
-  "description": "",
+  "description": "This build tool automates the web development build process. Well, there is gulp and there is grunt, which are much more feature-packed. But in a limited development environment where there is little permission, **spuild** is the tool for you.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint"
   },
-  "author": "",
+  "author": "ongspxm",
   "license": "ISC",
   "dependencies": {
-    "pug": "^2.0.3"
+    "glob": "^7.1.2",
+    "pug": "^2.0.3",
+    "sass": "^1.9.2"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ongspxm/spuild2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ongspxm/spuild2/issues"
+  },
+  "homepage": "https://github.com/ongspxm/spuild2#readme"
 }
