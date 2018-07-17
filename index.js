@@ -6,9 +6,10 @@ const glob = require('glob');
 const pug = require('pug');
 const sass = require('sass');
 
-const buildPath = 'build';
-const srcPath = process.argv[2] || 'src';
-const getPath = path => `${buildPath}${path.slice(3)}`;
+const parentPath = process.argv[2] || '.';
+const srcPath = `${parentPath}/src`;
+const buildPath = `${parentPath}/build`;
+const getPath = path => `${buildPath}${path.slice(srcPath.length)}`;
 
 if (!fs.existsSync(buildPath)) {
   fs.mkdirSync(buildPath);
@@ -82,4 +83,6 @@ glob(`${srcPath}/**/*`, (err, files) => {
       fs.writeFileSync(fname2, funcOutput(fname));
     }
   });
+
+  console.log('.');
 });
