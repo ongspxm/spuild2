@@ -3,8 +3,8 @@
 const fs = require('fs');
 const glob = require('glob');
 
-const pug = require('pug');
-const sass = require('sass');
+const jade = require('./mod_jade.js');
+const sass = require('./mod_sass.js');
 
 const parentPath = process.argv[2] || '.';
 const srcPath = `${parentPath}/src`;
@@ -12,32 +12,16 @@ const buildPath = `${parentPath}/build`;
 const getPath = path => `${buildPath}${path.slice(srcPath.length)}`;
 
 const prettyPrint = false;
-
 // generating the output //
-function scss(fname) {
-  return sass.renderSync({
-    file: fname,
-    sourceMap: false,
-    sourceComments: false,
-    outputStyle: prettyPrint ? 'nested' : 'compressed',
-  }).css;
-}
-
-function jade(fname) {
-  return pug.renderFile(fname, {
-    pretty: prettyPrint,
-  });
-}
-
 function copy(fname) {
-  return fs.readFileSync(fname);
+  return Promise.resolve(fs.readFileSync(fname));
 }
 
 const funcs = {
   pug: jade,
   jade,
-  scss,
-  sass: scss,
+  sass,
+  scss: sass,
 };
 
 // formats stuff //
@@ -82,8 +66,8 @@ glob(`${srcPath}/**/*`, (err, files) => {
       const funcOutput = funcs[fext] || copy;
       const funcFormat = formats[fext] || identity;
 
-      const fname2 = funcFormat(getPath(fname));
-      fs.writeFileSync(fname2, funcOutput(fname));
+      const fname2 = funcFormat(getPath(fname), prettyPrint);
+      funcOutput(fname).then(content => fs.writeFileSync(fname2, content));
     }
   });
 
