@@ -11,14 +11,9 @@ const srcPath = `${parentPath}/src`;
 const buildPath = `${parentPath}/build`;
 const getPath = path => `${buildPath}${path.slice(srcPath.length)}`;
 
-if (!fs.existsSync(buildPath)) {
-  fs.mkdirSync(buildPath);
-}
-
 const prettyPrint = false;
 
 // generating the output //
-
 function scss(fname) {
   return sass.renderSync({
     file: fname,
@@ -66,6 +61,14 @@ const formats = {
 };
 
 glob(`${srcPath}/**/*`, (err, files) => {
+  if (files.length === 0) {
+    return console.log('empty!');
+  }
+
+  if (!fs.existsSync(buildPath)) {
+    fs.mkdirSync(buildPath);
+  }
+
   files.forEach((fname) => {
     if (fs.lstatSync(fname).isDirectory()) {
       const dname = getPath(fname);
@@ -84,5 +87,5 @@ glob(`${srcPath}/**/*`, (err, files) => {
     }
   });
 
-  console.log('.');
+  return console.log('.');
 });
