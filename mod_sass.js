@@ -8,8 +8,9 @@ module.exports = function convert(fname, prettyPrint) {
     sourceMap: false,
     sourceComments: false,
     outputStyle: prettyPrint ? 'nested' : 'compressed',
-  }).css;
+  }).css.toString();
 
-  return postcss([ autoprefixer ]).process(css.toString())
+  return postcss([ autoprefixer ])
+    .process(css, { from: undefined })
     .then((result) => result.css);
 };
