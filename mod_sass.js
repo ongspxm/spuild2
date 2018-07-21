@@ -10,7 +10,7 @@ module.exports = function convert(fname, prettyPrint) {
     outputStyle: prettyPrint ? 'nested' : 'compressed',
   }).css.toString();
 
-  return postcss([ autoprefixer ])
+  return postcss([autoprefixer])
     .process(css, { from: undefined })
-    .then((result) => result.css);
+    .then(result => result.css);
 };
