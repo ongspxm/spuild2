@@ -9,15 +9,14 @@ const sass = require('./mod_sass.js');
 
 const args = process.argv.slice(2);
 
-const parentPath = args[args.length-1] || '.';
-const srcPath = `${parentPath}/src`;
-const buildPath = `${parentPath}/build`;
+const srcPath = './src';
+const buildPath = './build';
+const spuildPath = './spuild.json';
 const getPath = path => `${buildPath}${path.slice(srcPath.length)}`;
 
 const getFlag = f => args.indexOf(f) !== -1;
 const flagClean = getFlag('-c');
 const flagPrettyPrint = getFlag('-p');
-console.log(flagPrettyPrint, flagClean);
 
 function copy(fname) {
   return Promise.resolve(fs.readFileSync(fname));
@@ -58,7 +57,7 @@ glob(`${srcPath}/**/*`, (err, files) => {
     fs.mkdirSync(buildPath);
   }
 
-  const db = new DB(`${parentPath}/spuild.json`);
+  const db = new DB(spuildPath);
   files.forEach((fname) => {
     if (fs.lstatSync(fname).isDirectory()) {
       const dname = getPath(fname);
@@ -69,7 +68,8 @@ glob(`${srcPath}/**/*`, (err, files) => {
       const mtime = fs.statSync(fname).mtime.getTime();
       const rname = fname.slice(srcPath.length);
 
-      if (mtime !== db.get(rname)) {
+      const statePrettyPrint = db.get('pprint');
+      if (statePrettyPrint !== flagPrettyPrint || mtime !== db.get(rname)) {
         console.log(fname);
         const fext = fname.split('.').slice(-1)[0];
         const funcOutput = funcs[fext] || copy;
@@ -81,6 +81,8 @@ glob(`${srcPath}/**/*`, (err, files) => {
       }
     }
   });
+
+  db.set('pprint', flagPrettyPrint);
   db.save();
 
   return console.log('.');
