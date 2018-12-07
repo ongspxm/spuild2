@@ -8,10 +8,14 @@ This build tool automates the web development build process. Currently, these ar
 More details on inspiration [here](https://ongspxm.github.io/blog/2018/07/spuild2/).
 
 ## install
+### from source
 - `git clone <this repository>`
 - `cd spuild2`
 - `npm install`
 - `npm link` (allows you to call `spuild` globally)
+
+### from npm
+- `npm install -g spuild`
 
 ## basic usage, in directory
 ensure you are in your project directory, which is organized in the following way.
