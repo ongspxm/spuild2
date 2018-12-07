@@ -1,14 +1,17 @@
-# Spuild: Web build tool in python
+# Spuild: Web build tool in NodeJS
 
-This build tool automates the web development build process. Well, there is gulp and there is grunt, which are much more feature-packed. But in a limited development environment where there is little permission, **spuild** is the tool for you.
-
-Currently, these are plugins that are ready for use:
+This build tool automates the web development build process. Currently, these are plugins that are ready for use:
 
 - Generating HTML from JADE templates
 - Generating CSS form SCSS templates
 
+More details on inspiration [here](https://ongspxm.github.io/blog/2018/07/spuild2/).
+
 ## install
-`npm install -g spuild`
+- `git clone <this repository>`
+- `cd spuild2`
+- `npm install`
+- `npm link` (allows you to call `spuild` globally)
 
 ## basic usage, in directory
 ensure you are in your project directory, which is organized in the following way.
