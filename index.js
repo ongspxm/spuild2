@@ -69,7 +69,7 @@ glob(`${srcPath}/**/*`, (err, files) => {
       const mtime = fs.statSync(fname).mtime.getTime();
       const rname = fname.slice(srcPath.length);
 
-      if (mtime !== db.getTstamp(rname)) {
+      if (mtime !== db.get(rname)) {
         console.log(fname);
         const fext = fname.split('.').slice(-1)[0];
         const funcOutput = funcs[fext] || copy;
@@ -77,10 +77,11 @@ glob(`${srcPath}/**/*`, (err, files) => {
 
         const fname2 = funcFormat(getPath(fname), flagPrettyPrint);
         funcOutput(fname).then(content => fs.writeFileSync(fname2, content));
-        db.setTstamp(rname, mtime);
+        db.set(rname, mtime);
       }
     }
   });
+  db.save();
 
   return console.log('.');
 });

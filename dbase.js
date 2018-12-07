@@ -1,23 +1,15 @@
-const low = require('lowdb');
-const LowFile = require('lowdb/adapters/FileSync');
+const fs = require('fs');
 
-function DB(fname) {
-  this.db = low(new LowFile(fname, {}));
-  return this;
-}
+module.exports = function dbFunc(fname) {
+  const data = !fs.existsSync(fname) ? {}
+    : JSON.parse(fs.readFileSync(fname));
 
-DB.prototype.reset = function reset() {
-  this.db.setState({}).write();
-  return this;
+  return {
+    data,
+    get: key => data[key],
+    set: (key, val) => { data[key] = val; },
+    save: () => fs.writeFileSync(fname, JSON.stringify(data)),
+    reset: () => Object.keys(data).forEach(k => delete(data[k])),
+  };
 };
 
-DB.prototype.getTstamp = function getTstamp(fname) {
-  return this.db.get(fname).value();
-};
-
-DB.prototype.setTstamp = function setTstamp(fname, tstamp) {
-  this.db.set(fname, tstamp).write();
-  return this;
-};
-
-module.exports = DB;
