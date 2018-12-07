@@ -7,11 +7,17 @@ const DB = require('./dbase.js');
 const jade = require('./mod_jade.js');
 const sass = require('./mod_sass.js');
 
-const parentPath = process.argv[2] || '.';
+const args = process.argv.slice(2);
+
+const parentPath = args[args.length-1] || '.';
 const srcPath = `${parentPath}/src`;
 const buildPath = `${parentPath}/build`;
 const getPath = path => `${buildPath}${path.slice(srcPath.length)}`;
-const prettyPrint = false;
+
+const getFlag = f => args.indexOf(f) !== -1;
+const flagClean = getFlag('-c');
+const flagPrettyPrint = getFlag('-p');
+console.log(flagPrettyPrint, flagClean);
 
 function copy(fname) {
   return Promise.resolve(fs.readFileSync(fname));
@@ -69,7 +75,7 @@ glob(`${srcPath}/**/*`, (err, files) => {
         const funcOutput = funcs[fext] || copy;
         const funcFormat = formats[fext] || identity;
 
-        const fname2 = funcFormat(getPath(fname), prettyPrint);
+        const fname2 = funcFormat(getPath(fname), flagPrettyPrint);
         funcOutput(fname).then(content => fs.writeFileSync(fname2, content));
         db.setTstamp(rname, mtime);
       }
