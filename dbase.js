@@ -9,7 +9,6 @@ module.exports = function dbFunc(fname) {
     get: key => data[key],
     set: (key, val) => { data[key] = val; },
     save: () => fs.writeFileSync(fname, JSON.stringify(data)),
-    reset: () => Object.keys(data).forEach(k => delete(data[k])),
+    reset: () => Object.keys(data).forEach(k => delete (data[k])),
   };
 };
-
