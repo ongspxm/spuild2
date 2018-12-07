@@ -48,6 +48,7 @@ const formats = {
   sass: swapFormat('css'),
 };
 
+const isDir = f => fs.lstatSync(f).isDirectory();
 glob(`${srcPath}/**/*`, (err, files) => {
   if (files.length === 0) {
     return console.log('empty!');
@@ -57,9 +58,18 @@ glob(`${srcPath}/**/*`, (err, files) => {
     fs.mkdirSync(buildPath);
   }
 
+  if (flagClean) {
+    // --- reversed to ensure directory is empty
+    glob.sync(`${buildPath}/**/*`).reverse()
+      .forEach(f => isDir(f) ? fs.rmdirSync(f) : fs.unlinkSync(f));
+    console.log('cleaned build folder');
+  }
+
   const db = new DB(spuildPath);
+  const updatedState = flagClean || db.get('pprint') !== flagPrettyPrint;
+
   files.forEach((fname) => {
-    if (fs.lstatSync(fname).isDirectory()) {
+    if (isDir(fname)) {
       const dname = getPath(fname);
       if (!fs.existsSync(dname)) {
         fs.mkdirSync(dname);
@@ -69,7 +79,7 @@ glob(`${srcPath}/**/*`, (err, files) => {
       const rname = fname.slice(srcPath.length);
 
       const statePrettyPrint = db.get('pprint');
-      if (statePrettyPrint !== flagPrettyPrint || mtime !== db.get(rname)) {
+      if (updatedState || mtime !== db.get(rname)) {
         console.log(fname);
         const fext = fname.split('.').slice(-1)[0];
         const funcOutput = funcs[fext] || copy;
@@ -85,5 +95,5 @@ glob(`${srcPath}/**/*`, (err, files) => {
   db.set('pprint', flagPrettyPrint);
   db.save();
 
-  return console.log('.');
+  return console.log(`\n${flagPrettyPrint ? 'pprinted' : 'compressed'}`);
 });
