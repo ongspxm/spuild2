@@ -2,8 +2,8 @@
 
 This build tool automates the web development build process. Currently, these are plugins that are ready for use:
 
-- Generating HTML from JADE templates
-- Generating CSS form SCSS templates
+- Generating HTML from JADE templates (`.jade` or `.pug`)
+- Generating CSS form SCSS templates (`.scss`, or `.sass`)
 
 More details on inspiration [here](https://ongspxm.github.io/blog/2018/07/spuild2/).
 
@@ -37,6 +37,7 @@ running `spuild` in `project/`.
  project
  |_ src/
  |  |_ assets/
+ |  |_ .dot-files-ignored
  |  |_ index.jade
  |  |_ style.scss
  |  |_ all-other-files.txt
@@ -46,3 +47,9 @@ running `spuild` in `project/`.
     |_ style.css
     |_ all-built-files.txt
 ```
+
+### pretty printing feature
+by default, the output of `spuild` is compressed. with the `-p` flag activated, your build will be rendered. If your output is not previously in the same state (pretty-printed VS compressed), it will be re-rendered too.
+
+### clean build feature
+this feature will remove the existing files in the build folder before re-rendering every file from `src`. If `build` is tracked using `git`, no worries, your `.git` folder will be left untouched.
