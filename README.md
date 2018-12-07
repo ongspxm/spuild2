@@ -53,3 +53,12 @@ by default, the output of `spuild` is compressed. with the `-p` flag activated, 
 
 ### clean build feature
 this feature will remove the existing files in the build folder before re-rendering every file from `src`. If `build` is tracked using `git`, no worries, your `.git` folder will be left untouched.
+
+## updates
+### v1.1
+- add help to spuild
+- clean flag function for spuild
+- add flag to enable pretty-print
+- remove lowdb and use native fs
+- extract params into flags
+

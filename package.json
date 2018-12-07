@@ -1,6 +1,6 @@
 {
   "name": "spuild",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "This build tool automates the web development build process. Well, there is gulp and there is grunt, which are much more feature-packed. But in a limited development environment where there is little permission, **spuild** is the tool for you.",
   "bin": {
     "spuild": "index.js"
